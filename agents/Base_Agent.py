@@ -21,7 +21,7 @@ class Base_Agent(object):
         self.set_random_seeds(config.seed)
         self.environment = config.environment
         self.environment_title = self.get_environment_title()
-        self.action_types = "DISCRETE" if self.environment.action_space.dtype == np.int64 else "CONTINUOUS"
+        self.action_types = "DISCRETE" if self.environment.action_space.dtype in [np.int64,np.int32] else "CONTINUOUS"
         self.action_size = int(self.get_action_size())
         self.config.action_size = self.action_size
 
