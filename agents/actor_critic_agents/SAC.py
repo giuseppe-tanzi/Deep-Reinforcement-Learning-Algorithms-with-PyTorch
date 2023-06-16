@@ -149,8 +149,6 @@ class SAC(Base_Agent):
 
     def learn(self):
         """Runs a learning iteration for the actor, both critics and (if specified) the temperature parameter"""
-
-
         state_batch, action_batch, reward_batch, next_state_batch, mask_batch = self.sample_experiences()
         qf1_loss, qf2_loss = self.calculate_critic_losses(state_batch, action_batch, reward_batch, next_state_batch, mask_batch)
         self.update_critic_parameters(qf1_loss, qf2_loss)
