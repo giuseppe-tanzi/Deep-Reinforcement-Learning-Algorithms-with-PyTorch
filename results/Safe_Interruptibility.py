@@ -27,55 +27,6 @@ config.save_model = True
 
 
 config.hyperparameters = {
-    "DQN_Agents": {
-        "learning_rate": 0.01,
-        "batch_size": 256,
-        "buffer_size": 40000,
-        "epsilon": 1.0,
-        "epsilon_decay_rate_denominator": 1,
-        "discount_rate": 0.99,
-        "tau": 0.01,
-        "alpha_prioritised_replay": 0.6,
-        "beta_prioritised_replay": 0.1,
-        "incremental_td_error": 1e-8,
-        "update_every_n_steps": 1,
-        "linear_hidden_units": [30, 15],
-        "final_layer_activation": "None",
-        "batch_norm": False,
-        "gradient_clipping_norm": 0.7,
-        "learning_iterations": 1,
-        "clip_rewards": False
-    },
-    "Stochastic_Policy_Search_Agents": {
-        "policy_network_type": "Linear",
-        "noise_scale_start": 1e-2,
-        "noise_scale_min": 1e-3,
-        "noise_scale_max": 2.0,
-        "noise_scale_growth_factor": 2.0,
-        "stochastic_action_decision": False,
-        "num_policies": 10,
-        "episodes_per_policy": 1,
-        "num_policies_to_keep": 5,
-        "clip_rewards": False
-    },
-    "Policy_Gradient_Agents": {
-        "learning_rate": 0.05,
-        "linear_hidden_units": [20, 20],
-        "final_layer_activation": "Softmax",
-        "learning_iterations_per_round": 5,
-        "discount_rate": 0.99,
-        "batch_norm": False,
-        "clip_epsilon": 0.1,
-        "episodes_per_learning_round": 4,
-        "normalise_rewards": True,
-        "gradient_clipping_norm": 7.0,
-        "mu": 0.0, #only required for continuous action games
-        "theta": 0.0, #only required for continuous action games
-        "sigma": 0.0, #only required for continuous action games
-        "epsilon_decay_rate_denominator": 1.0,
-        "clip_rewards": False
-    },
-
     "Actor_Critic_Agents":  {
 
         "learning_rate": 0.005,
