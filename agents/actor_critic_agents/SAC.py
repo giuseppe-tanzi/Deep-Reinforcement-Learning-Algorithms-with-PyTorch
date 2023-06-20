@@ -86,12 +86,12 @@ class SAC(Base_Agent):
             if self.time_for_critic_and_actor_to_learn():
                 for _ in range(self.hyperparameters["learning_updates_per_learning_session"]):
                     self.learn()
-            mask = False if self.episode_step_number_val >= self.environment._max_episode_steps else self.done
+            mask = False if self.episode_step_number_val >= self.environment.max_episode_steps else self.done
             if not eval_ep: self.save_experience(experience=(self.state, self.action, self.reward, self.next_state, mask))
             self.state = self.next_state
             self.global_step_number += 1
 
-            if self.episode_step_number_val >= self.environment._max_episode_steps:
+            if self.episode_step_number_val >= self.environment.max_episode_steps:
                 self.done = True
         print("----------------------------------------------------")
         if eval_ep: self.print_summary_of_latest_evaluation_episode()

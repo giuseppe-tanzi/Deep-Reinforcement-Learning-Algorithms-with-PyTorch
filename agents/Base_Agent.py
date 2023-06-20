@@ -33,8 +33,7 @@ class Base_Agent(object):
         # set our own rolling score window
         # self.rolling_score_window = self.get_trials()
         self.rolling_score_window = 100
-        # self.max_steps_per_episode = self.environment.spec.max_episode_steps
-        self.max_steps_per_episode = self.environment._max_episode_steps
+        self.max_steps_per_episode = self.environment.max_episode_steps
         # print(f"{self.max_steps_per_episode=}")
         self.total_episode_score_so_far = 0
         self.game_full_episode_scores = []
@@ -281,11 +280,7 @@ class Base_Agent(object):
         """Saves the recent experience to the memory buffer"""
         if memory is None: memory = self.memory
         if experience is None: experience = self.state, self.action, self.reward, self.next_state, self.done
-        # do not add the experience to the replay buffer if it's an unsafe action.
-        if 5 in self.state and 5 not in self.next_state:
-            pass
-        else:
-            memory.add_experience(*experience)
+        memory.add_experience(*experience)
 
     def take_optimisation_step(self, optimizer, network, loss, clipping_norm=None, retain_graph=False):
         """Takes an optimisation step by calculating gradients given the loss and then updating the parameters"""

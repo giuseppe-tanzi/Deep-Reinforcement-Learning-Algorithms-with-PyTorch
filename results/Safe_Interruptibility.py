@@ -5,7 +5,10 @@ sys.path.append(dirname(dirname(abspath(__file__))))
 import gym
 import safe_grid_gym
 
+import argparse
+
 from agents.actor_critic_agents.SAC_Discrete import SAC_Discrete
+from agents.actor_critic_agents.SAC_Discrete_Safe import SAC_Discrete_Safe
 from agents.Trainer import Trainer
 from utilities.data_structures.Config import Config
 
@@ -24,7 +27,6 @@ config.use_GPU = False
 config.overwrite_existing_results_file = False
 config.randomise_random_seed = True
 config.save_model = True
-
 
 config.hyperparameters = {
     "Actor_Critic_Agents":  {
@@ -78,6 +80,19 @@ config.hyperparameters = {
 }
 
 if __name__ == "__main__":
-    AGENTS = [SAC_Discrete]
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--unsafe_path", type=str, default=None, help="Path to file containing unsafe transition to avoid")
+
+    args = parser.parse_args()
+
+    config.unsafe_path = args.unsafe_path
+
+    if config.unsafe_path:
+        AGENTS = [SAC_Discrete_Safe]
+    else:
+        AGENTS = [SAC_Discrete]
+
+
     trainer = Trainer(config, AGENTS)
     trainer.run_games_for_agents()

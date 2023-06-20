@@ -12,9 +12,9 @@ from utilities.Utility_Functions import create_actor_distribution
 class SAC_Discrete(SAC):
     """The Soft Actor Critic for discrete actions. It inherits from SAC for continuous actions and only changes a few
     methods."""
-    agent_name = "SAC"
     def __init__(self, config):
         Base_Agent.__init__(self, config)
+        self.agent_name = "SAC_Discrete"
         assert self.action_types == "DISCRETE", "Action types must be discrete. Use SAC instead for continuous actions"
         assert self.config.hyperparameters["Actor"]["final_layer_activation"] == "Softmax", "Final actor layer must be softmax"
         self.hyperparameters = config.hyperparameters
