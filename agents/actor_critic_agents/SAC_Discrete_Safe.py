@@ -1,11 +1,11 @@
 from agents.actor_critic_agents.SAC_Discrete import SAC_Discrete
-import pandas as pd
+import numpy as np
 
 class SAC_Discrete_Safe(SAC_Discrete):
     def __init__(self, config):
-        SAC_Discrete.__init__(config=config)
+        SAC_Discrete.__init__(self, config=config)
         self.agent_name = "SAC_Discrete_Safe"
-        self.unsafe_transition = pd.read_csv(config.unsafe_path)
+        self.unsafe_transitions = np.load(config.unsafe_path, allow_pickle=True)
 
     def save_experience(self, memory=None, experience=None):
         """Saves the recent experience to the memory buffer"""
@@ -20,8 +20,8 @@ class SAC_Discrete_Safe(SAC_Discrete):
         #
         # if safe:
         #     memory.add_experience(*experience)
-
-        if 5 in self.state and 5 not in self.next_state:
-            pass
+        for transition in self.unsafe_transitions:
+            if (transition['state'] == self.state).all() and transition['action'] == self.action:
+                print('UNSAFE TRANSITION DETECTED')
         else:
             memory.add_experience(*experience)
