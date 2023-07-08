@@ -20,8 +20,11 @@ class SAC_Discrete_Safe(SAC_Discrete):
         #
         # if safe:
         #     memory.add_experience(*experience)
+        safe = True
         for transition in self.unsafe_transitions:
             if (transition['state'] == self.state).all() and transition['action'] == self.action:
                 print('UNSAFE TRANSITION DETECTED')
-        else:
+                safe = False
+                break
+        if safe:
             memory.add_experience(*experience)
