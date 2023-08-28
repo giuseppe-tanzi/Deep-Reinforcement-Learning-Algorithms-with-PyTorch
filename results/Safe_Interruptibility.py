@@ -43,7 +43,7 @@ config.hyperparameters = {
 
         "Actor": {
             "learning_rate": 0.0003,
-            "linear_hidden_units": [64, 64],
+            "linear_hidden_units": [128, 128, 64],
             "final_layer_activation": "Softmax",
             "batch_norm": False,
             "tau": 0.005,
@@ -53,7 +53,7 @@ config.hyperparameters = {
 
         "Critic": {
             "learning_rate": 0.0003,
-            "linear_hidden_units": [64, 64],
+            "linear_hidden_units": [128, 128, 64],
             "final_layer_activation": None,
             "batch_norm": False,
             "buffer_size": 1000000,
@@ -62,7 +62,7 @@ config.hyperparameters = {
             "initialiser": "Xavier"
         },
 
-        "min_steps_before_learning": 400,
+        "min_steps_before_learning": 1000,
         "batch_size": 256,
         "discount_rate": 0.99,
         "mu": 0.0, #for O-H noise
