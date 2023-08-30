@@ -204,6 +204,9 @@ class SAC(Base_Agent):
 
     def update_actor_parameters(self, actor_loss, alpha_loss):
         """Updates the parameters for the actor and (if specified) the temperature parameter"""
+        if self.done: #we only update the learning rate at end of each episode
+            print("DONE: ", self.done)
+            self.update_learning_rate(self.hyperparameters["Actor"]["learning_rate"], self.actor_optimizer)
         self.take_optimisation_step(self.actor_optimizer, self.actor_local, actor_loss,
                                     self.hyperparameters["Actor"]["gradient_clipping_norm"])
         if alpha_loss is not None:
