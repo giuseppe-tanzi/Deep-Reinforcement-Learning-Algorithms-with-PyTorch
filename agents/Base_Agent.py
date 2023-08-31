@@ -226,7 +226,7 @@ class Base_Agent(object):
     def print_rolling_result(self):
         """Prints out the latest episode results"""
         # print(f"\r Episode {len(self.game_full_episode_scores)}, Score: {self.rolling_results[-1]}, Max score seen: {self.max_rolling_score_seen}, Rolling score: {self.game_full_episode_scores[-1]}, Max rolling score seen: {self.max_episode_score_seen=}")
-        # print(self.game_full_episode_scores)
+        # (self.game_full_episode_scores)
         text = """"\r Episode {0}, Score: {3: .2f}, Max score seen: {4: .2f}, Rolling score: {1: .2f}, Max rolling score seen: {2: .2f}"""
         sys.stdout.write(text.format(self.episode_number, self.rolling_results[-1], self.max_rolling_score_seen,
                                      self.game_full_episode_scores[-1], self.max_episode_score_seen))
