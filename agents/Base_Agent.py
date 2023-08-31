@@ -191,6 +191,7 @@ class Base_Agent(object):
             self.reset_game()
             self.step()
             if save_and_print_results: self.save_and_print_result()
+            if all(score >= self.average_score_required_to_win for score in self.game_full_episode_scores[-150:]): break
         time_taken = time.time() - start
         if show_whether_achieved_goal: self.show_whether_achieved_goal()
         if self.config.save_model: self.locally_save_policy()
