@@ -8,7 +8,7 @@ import safe_grid_gym
 import argparse
 
 from agents.actor_critic_agents.SAC_Discrete import SAC_Discrete
-from agents.actor_critic_agents.SAC_Discrete_Safe import SAC_Discrete_Safe
+from agents.actor_critic_agents.SAC_Discrete_Safe import SAC_Discrete_Safe, SAC_Discrete_Safe_Shielding
 from agents.Trainer import Trainer
 from utilities.data_structures.Config import Config
 
@@ -83,13 +83,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--unsafe_path", type=str, default=None, help="Path to file containing unsafe transition to avoid")
+    parser.add_argument("--shielding", action="store_true", default=False, help="Use shielding, default uses forgetting")
 
     args = parser.parse_args()
 
     config.unsafe_path = args.unsafe_path
 
     if config.unsafe_path:
-        AGENTS = [SAC_Discrete_Safe]
+        if args.shielding:
+            AGENTS = [SAC_Discrete_Safe]
+        else:
+            AGENTS = [SAC_Discrete_Safe_Shielding]
     else:
         AGENTS = [SAC_Discrete]
 
