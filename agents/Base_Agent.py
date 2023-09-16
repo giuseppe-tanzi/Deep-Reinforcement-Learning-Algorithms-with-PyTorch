@@ -10,6 +10,7 @@ import time
 from nn_builder.pytorch.NN import NN
 # from tensorboardX import SummaryWriter
 from torch.optim import optimizer
+from .CustomNet import SimpleNN
 
 class Base_Agent(object):
 
@@ -258,14 +259,16 @@ class Base_Agent(object):
     def update_learning_rate(self, starting_lr,  optimizer):
         """Lowers the learning rate according to how close we are to the solution"""
         if len(self.rolling_results) > 0:
-            last_rolling_score = self.rolling_results[-1]
-            if last_rolling_score > 0.75 * self.average_score_required_to_win:
+            last_rolling_score = np.interp(self.rolling_results[-1], (-60, 100), (0,1))
+            avg_score = np.interp(self.average_score_required_to_win, (-60, 100), (0,1))
+
+            if last_rolling_score > 0.75 * avg_score:
                 new_lr = starting_lr / 100.0
-            elif last_rolling_score > 0.6 * self.average_score_required_to_win:
+            elif last_rolling_score > 0.6 * avg_score:
                 new_lr = starting_lr / 20.0
-            elif last_rolling_score > 0.5 * self.average_score_required_to_win:
+            elif last_rolling_score > 0.5 * avg_score:
                 new_lr = starting_lr / 10.0
-            elif last_rolling_score > 0.25 * self.average_score_required_to_win:
+            elif last_rolling_score > 0.25 * avg_score:
                 new_lr = starting_lr / 2.0
             else:
                 new_lr = starting_lr
@@ -333,6 +336,7 @@ class Base_Agent(object):
             if key not in hyperparameters.keys():
                 hyperparameters[key] = default_hyperparameter_choices[key]
 
+        # return SimpleNN(input_size=input_dim)
         return NN(input_dim=input_dim, layers_info=hyperparameters["linear_hidden_units"] + [output_dim],
                   output_activation=hyperparameters["final_layer_activation"],
                   batch_norm=hyperparameters["batch_norm"], dropout=hyperparameters["dropout"],
