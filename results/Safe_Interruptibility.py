@@ -92,12 +92,14 @@ if __name__ == "__main__":
 
     if config.unsafe_path:
         if args.shielding:
-            AGENTS = [SAC_Discrete_Safe]
-        else:
+            print("Using Sac Discrete with Shielding")
             AGENTS = [SAC_Discrete_Safe_Shielding]
+        else:
+            print("Using Sac Discrete with Forced Forgetting")
+            AGENTS = [SAC_Discrete_Safe]
     else:
+        print("Using unsafe Sac Discrete")
         AGENTS = [SAC_Discrete]
-
 
     trainer = Trainer(config, AGENTS)
     trainer.run_games_for_agents()
