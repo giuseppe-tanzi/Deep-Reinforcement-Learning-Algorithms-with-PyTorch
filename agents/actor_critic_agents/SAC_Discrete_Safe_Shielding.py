@@ -4,7 +4,7 @@ import time
 import torch
 from utilities.Utility_Functions import create_actor_distribution
 
-class SAC_Discrete_Safe(SAC_Discrete):
+class SAC_Discrete_Safe_Shielding(SAC_Discrete):
     def __init__(self, config):
         SAC_Discrete.__init__(self, config=config)
         self.agent_name = "SAC_Discrete_Safe"

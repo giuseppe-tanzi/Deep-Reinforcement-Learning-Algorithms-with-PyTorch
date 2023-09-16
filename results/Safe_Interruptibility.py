@@ -8,7 +8,8 @@ import safe_grid_gym
 import argparse
 
 from agents.actor_critic_agents.SAC_Discrete import SAC_Discrete
-from agents.actor_critic_agents.SAC_Discrete_Safe import SAC_Discrete_Safe, SAC_Discrete_Safe_Shielding
+from agents.actor_critic_agents.SAC_Discrete_Safe import SAC_Discrete_Safe
+from agents.actor_critic_agents.SAC_Discrete_Safe_Shielding import SAC_Discrete_Safe_Shielding
 from agents.Trainer import Trainer
 from utilities.data_structures.Config import Config
 
