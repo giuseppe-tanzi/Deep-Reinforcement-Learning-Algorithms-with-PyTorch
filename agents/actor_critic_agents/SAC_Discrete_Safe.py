@@ -13,14 +13,6 @@ class SAC_Discrete_Safe(SAC_Discrete):
         if memory is None: memory = self.memory
         if experience is None: experience = self.state, self.action, self.reward, self.next_state, self.done
         # do not add the experience to the replay buffer if it's an unsafe action.
-        # safe = True
-        # for _, transition in self.unsafe_transition.iterrows():
-        #     if transition['state'] == self.state and transition['action'] == self.action:
-        #         safe = False
-        #         break
-        #
-        # if safe:
-        #     memory.add_experience(*experience)
         safe = True
         for transition in self.unsafe_transitions:
             if (transition['state'] == self.state).all() and transition['action'] == self.action:

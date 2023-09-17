@@ -3,6 +3,8 @@ import numpy as np
 import time
 import torch
 from utilities.Utility_Functions import create_actor_distribution
+import random
+
 
 class SAC_Discrete_Safe_Shielding(SAC_Discrete):
     def __init__(self, config):
@@ -10,28 +12,6 @@ class SAC_Discrete_Safe_Shielding(SAC_Discrete):
         self.agent_name = "SAC_Discrete_Safe"
         self.unsafe_transitions = np.load(config.unsafe_path, allow_pickle=True)
 
-    def save_experience(self, memory=None, experience=None):
-        """Saves the recent experience to the memory buffer"""
-        if memory is None: memory = self.memory
-        if experience is None: experience = self.state, self.action, self.reward, self.next_state, self.done
-        # do not add the experience to the replay buffer if it's an unsafe action.
-        # safe = True
-        # for _, transition in self.unsafe_transition.iterrows():
-        #     if transition['state'] == self.state and transition['action'] == self.action:
-        #         safe = False
-        #         break
-        #
-        # if safe:
-        #     memory.add_experience(*experience)
-        safe = True
-        # for transition in self.unsafe_transitions:
-        #     if (transition['state'] == self.state).all() and transition['action'] == self.action:
-        #         print('UNSAFE TRANSITION DETECTED')
-        #         safe = False
-        #         break
-        if safe:
-            memory.add_experience(*experience)
-    
     def run_n_episodes(self, num_episodes=None, show_whether_achieved_goal=True, save_and_print_results=True):
         """Runs game to completion n times and then summarises results and saves model (if asked to)"""
         if num_episodes is None: num_episodes = self.config.num_episodes_to_run
@@ -71,17 +51,14 @@ class SAC_Discrete_Safe_Shielding(SAC_Discrete):
                         break
 
             if safe > -1:
-                if action_probabilities.shape[0] == 256:
-                    pass
-                new_prob = np.array([0.3333, 0.3333, 0.3333, 0.3333])
-                new_prob[max_action] = 0.0001
-                action_probabilities[safe] = torch.tensor(new_prob)
-
-        max_probability_action = torch.argmax(action_probabilities, dim=-1)
+                possible_actions = [0, 1, 2, 3]
+                possible_actions.pop(max_action)
+                max_probability_action[safe] = random.choice(possible_actions)
+        # max_probability_action = torch.argmax(action_probabilities, dim=-1)
         action_distribution = create_actor_distribution(self.action_types, action_probabilities, self.action_size)
         action = action_distribution.sample().cpu()
         # Have to deal with situation of 0.0 probabilities because we can't do log 0
         z = action_probabilities == 0.0
         z = z.float() * 1e-8
         log_action_probabilities = torch.log(action_probabilities + z)
-        return action, (action_probabilities, log_action_probabilities), max_probability_action
+        return max_probability_action, (action_probabilities, log_action_probabilities), max_probability_action
